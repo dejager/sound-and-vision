@@ -1,2 +1,3 @@
 # sound-and-vision
-Blue, blue, electric blue. That's the color of my room.
+
+A candy-coated loading indicator animation made with a Metal kernel function.
