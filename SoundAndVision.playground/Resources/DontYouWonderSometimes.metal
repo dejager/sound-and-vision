@@ -24,7 +24,7 @@ float radians(float d) {
 }
 
 float2 minfloatSelect(float2 a, float2 b) {
-  return a.x<b.x?a:b;
+  return a.x < b.x ? a : b;
 }
 
 float hash(float n) {
@@ -39,10 +39,10 @@ float noise(float3 x) {
 
   float n = p.x + p.y * 57.0 + 113.0 * p.z;
 
-  float res = mix(mix(mix( hash(n+  0.0), hash(n+  1.0),f.x),
-                      mix( hash(n+ 57.0), hash(n+ 58.0),f.x),f.y),
-                  mix(mix( hash(n+113.0), hash(n+114.0),f.x),
-                      mix( hash(n+170.0), hash(n+171.0),f.x),f.y),f.z);
+  float res = mix(mix(mix(hash(n+  0.0), hash(n+  1.0),f.x),
+                      mix(hash(n+ 57.0), hash(n+ 58.0),f.x),f.y),
+                  mix(mix(hash(n+113.0), hash(n+114.0),f.x),
+                      mix(hash(n+170.0), hash(n+171.0),f.x),f.y),f.z);
   return res;
 }
 
@@ -57,7 +57,7 @@ float2 map(float3 p, float time) {
     float r = 0.6 - m * layerThickness + ( 1.0 - fr) * layerThickness;
     float d = sphere(p, r);
     d = abs(d) - layerThickness / 2.0;
-    float o =  - 4. * fract( (time + float(i)) / float(nbLayers));
+    float o =  - 4.0 * fract( (time + float(i)) / float(nbLayers));
   d = max(d, 1.5 + p.x  + o + cnoise);
   vd = minfloatSelect(float2(d, float(i)), vd);
   }
@@ -77,14 +77,14 @@ float3 calculateNormal(float3 p, float time) {
 float calcAO(float3 pos, float3 nor, float time) {
   float occ = 0.0;
   float sca = 1.0;
-  for(int i=0; i<5; i++) {
-    float hr = 0.01 + 0.12*float(i)/12.0;
+  for(int i=0; i < 5; i++) {
+    float hr = 0.01 + 0.12 * float(i) / 12.0;
     float3 aopos =  nor * hr + pos;
     float dd = map( aopos, time).x;
-    occ += -(dd-hr)*sca;
+    occ += -(dd - hr) * sca;
     sca *= 0.95;
   }
-  return sat(1.0 - 4. * occ);
+  return sat(1.0 - 4.0 * occ);
 }
 
 
@@ -105,14 +105,14 @@ float3 Render(float3 ro, float3 rd, float3 cd, float dist, float time) {
 
   if(d < dist) {
     float3 light = float3(0.0, 4.0, 2.0);
-    float3 p = ro + t*rd;
+    float3 p = ro + t * rd;
     float3 n = calculateNormal(p, time);
     float3 v = normalize(ro - p);
     float3 l = normalize(light - p);
     float3 h = normalize(l + v);
 
     float3 diffcol = normalize(float3(1.0 + sin(m * 0.7 + 1.3), 1. + sin(m * 1.3 + 4.45), 1. + sin(m * 1.9 + 2.3)));
-    float3 speccol = float3(1.,1.,1.);
+    float3 speccol = float3(1.0, 1.0, 1.0);
     float3 ambcol = diffcol;
     float ao = calcAO(p, n, time);
 
@@ -133,7 +133,7 @@ float3x3 setCamera(float3 ro, float3 ta) {
 }
 
 float3 desat(float3 c, float a) {
-  float l = dot(c, float3(1. / 3.));
+  float l = dot(c, float3(1.0 / 3.0));
   return mix(c, float3(l), a);
 }
 
@@ -149,7 +149,6 @@ kernel void boutSoundAndVision(texture2d<float, access::write> o[[texture(0)]],
   float2 res = float2(width, height);
   float2 co = float2(gid.xy);
 
-  // NDJ
   float3 total = float3(0.0);
 
   float2 rook[4];

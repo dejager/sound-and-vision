@@ -28,7 +28,7 @@ renderer.library = library
 renderer.functionName = "boutSoundAndVision"
 shaderView.shader.set(renderer: renderer)
 
-let view = NSView(frame: NSRect(x: 0, y: 0, width: 500, height: 400))
+let view = NSView(frame: NSRect(x: 0, y: 0, width: 400, height: 400))
 view.wantsLayer = true
 view.layer?.backgroundColor = CGColor.white
 
